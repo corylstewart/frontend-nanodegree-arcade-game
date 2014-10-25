@@ -25,7 +25,9 @@ Enemy.prototype.update = function(dt) {
     // all computers.
   //if enemy leaves screen create a new enemy else move the enemy
   if (this.x > 505) {
-    this = Enemy();
+    console.log(allEnemies.indexOf(this));
+    allEnemies.pop(allEnemies.indexOf(this));
+    allEnemies.push(new Enemy);
   } else {
     this.x += (dt) * this.speed;
   }
@@ -47,7 +49,7 @@ var Player = function() {
   this.col = 2;
   //set the location using pxl offsets
   this.x = this.col * 101;
-  this.y = (this.row * 83) -26;
+  this.y = this.row * 83;
 }
 
 Player.prototype.update = function() {
@@ -57,6 +59,7 @@ Player.prototype.update = function() {
   var pright = this.x+82;
   //for each enemy check if in state of collision
   allEnemies.forEach(function(enemy) {
+    console.log('bah');
     //set the left and right boundaries of the enemy        
     var eleft = enemy.x+2;
     var eright = enemy.x+98;
@@ -65,6 +68,9 @@ Player.prototype.update = function() {
     if (this.row == enemy.row &&
       ((pleft < eright && pleft > eleft) ||
       (pright > eleft && pright < eright))) {
+	console.log('collision');
+    }
+    if (this.row == enemy.row) {
 	console.log('collision');
     }
   });
@@ -98,13 +104,15 @@ Player.prototype.handleInput = function(key) {
       break;
   }
   this.x = this.col*101;
-  this.y = (this.row*83) - 26
+  this.y = this.row*83 - 10;
 }
       
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
+var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
+var allEnemies = [];
+var player = new Player();
 
 
 // This listens for key presses and sends the keys to your
