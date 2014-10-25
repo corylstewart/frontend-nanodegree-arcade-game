@@ -49,6 +49,26 @@ var Player = function() {
   this.x = this.col * 101;
   this.y = (this.row * 83) -26;
 }
+
+Player.prototype.update = function() {
+  //first we need to see if we are in a state of collision
+  //set left and right boundaries of player
+  var pleft = this.x+20
+  var pright = this.x+82;
+  //for each enemy check if in state of collision
+  allEnemies.forEach(function(enemy) {
+    //set the left and right boundaries of the enemy        
+    var eleft = enemy.x+2;
+    var eright = enemy.x+98;
+    //enemy and player are on same row and boundaries collide
+    //we are in a state of collision
+    if (this.row == enemy.row &&
+      ((pleft < eright && pleft > eleft) ||
+      (pright > eleft && pright < eright))) {
+	console.log('collision');
+    }
+  });
+}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
