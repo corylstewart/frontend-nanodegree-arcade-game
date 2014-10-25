@@ -25,12 +25,21 @@ Enemy.prototype.update = function(dt) {
     // all computers.
   //if enemy leaves screen create a new enemy else move the enemy
   if (this.x > 505) {
-    console.log(allEnemies.indexOf(this));
-    allEnemies.pop(allEnemies.indexOf(this));
-    allEnemies.push(new Enemy);
+    this.reset();
   } else {
     this.x += (dt) * this.speed;
   }
+}
+
+Enemy.prototype.reset = function() {
+    //select the roe that the enemy is in
+    this.row = Math.floor(Math.random()*3) + 1;
+    //place the enemy just off the screen
+    this.x = -101;
+    //place the enemy in the right row
+    this.y = this.row*83 - 26;
+    //set the speed of the enemy
+    this.speed = 150 + Math.random()*Math.random()*300;
 }
 
 // Draw the enemy on the screen, required method for game
@@ -57,23 +66,30 @@ Player.prototype.update = function() {
   //set left and right boundaries of player
   var pleft = this.x+20
   var pright = this.x+82;
+  var prow = this.row;
+  var self = this;
   //for each enemy check if in state of collision
   allEnemies.forEach(function(enemy) {
-    console.log('bah');
+    console.log(enemy.row);
     //set the left and right boundaries of the enemy        
     var eleft = enemy.x+2;
     var eright = enemy.x+98;
     //enemy and player are on same row and boundaries collide
     //we are in a state of collision
-    if (this.row == enemy.row &&
+    if (prow == enemy.row &&
       ((pleft < eright && pleft > eleft) ||
       (pright > eleft && pright < eright))) {
-	console.log('collision');
-    }
-    if (this.row == enemy.row) {
-	console.log('collision');
+	  self.reset();
     }
   });
+}
+
+Player.prototype.reset = function() {
+  this.row = 5;
+  this.col = 2;
+  //set the location using pxl offsets
+  this.x = this.col * 101;
+  this.y = this.row * 83;  
 }
 
 Player.prototype.render = function(dt) {
@@ -111,7 +127,7 @@ Player.prototype.handleInput = function(key) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-var allEnemies = [];
+//var allEnemies = [];
 var player = new Player();
 
 
