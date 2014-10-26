@@ -64,24 +64,27 @@ var Player = function() {
 Player.prototype.update = function() {
   //first we need to see if we are in a state of collision
   //set left and right boundaries of player
-  var pleft = this.x+20
-  var pright = this.x+82;
-  var prow = this.row;
-  var self = this;
-  //for each enemy check if in state of collision
-  allEnemies.forEach(function(enemy) {
-    console.log(enemy.row);
-    //set the left and right boundaries of the enemy        
-    var eleft = enemy.x+2;
-    var eright = enemy.x+98;
-    //enemy and player are on same row and boundaries collide
-    //we are in a state of collision
-    if (prow == enemy.row &&
-      ((pleft < eright && pleft > eleft) ||
-      (pright > eleft && pright < eright))) {
-	  self.reset();
-    }
-  });
+  if (this.row == 0) {
+    this.reset();
+  } else {
+    var pleft = this.x+20
+    var pright = this.x+82;
+    var prow = this.row;
+    var self = this;
+    //for each enemy check if in state of collision
+    allEnemies.forEach(function(enemy) {
+      //set the left and right boundaries of the enemy        
+      var eleft = enemy.x+2;
+      var eright = enemy.x+98;
+      //enemy and player are on same row and boundaries collide
+      //we are in a state of collision
+      if (prow == enemy.row &&
+	((pleft < eright && pleft > eleft) ||
+	(pright > eleft && pright < eright))) {
+	    self.reset();
+      }
+    });
+  }
 }
 
 Player.prototype.reset = function() {
@@ -129,7 +132,8 @@ Player.prototype.handleInput = function(key) {
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 //var allEnemies = [];
 var player = new Player();
-
+var wins = 0;
+var loses = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
